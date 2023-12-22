@@ -1,0 +1,104 @@
+﻿@model List<HistoricalCurrencyViewModel.Rates>
+@{
+    Layout = null;
+    int count = 0;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Rapid Api </h1>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-6">
+            <button class="btn btn-primary">Buton 1</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-secondary">Buton  2</button>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    Güncel Dolar : @ViewBag.usd
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    Güncel Euro : @ViewBag.eur
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    Güncel Sterlin :@ViewBag.gbp
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    İstanbul için hava derecesi :@ViewBag.temperature °
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Gün</th>
+                        <th scope="col">Dolar</th>
+                        <th scope="col">TRY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                           <td>@count</td>
+                           <td></td>
+                        </tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    Chart 1
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    Chart 2
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
