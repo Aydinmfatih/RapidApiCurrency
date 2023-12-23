@@ -17,7 +17,7 @@ namespace RapidApiCurrency.Controllers
                 RequestUri = new Uri("https://currency-conversion-and-exchange-rates.p.rapidapi.com/convert?from=USD&to=TRY&amount=1"),
                 Headers =
     {
-        { "X-RapidAPI-Key", "e377acc97emsh8b49d7ff2f70369p1d60f2jsn2c2b95aa1ebb" },
+        { "X-RapidAPI-Key", "a63848afabmsh17767ddb31368ccp17f9adjsn3197c69e37e1" },
         { "X-RapidAPI-Host", "currency-conversion-and-exchange-rates.p.rapidapi.com" },
     },
             };
@@ -28,7 +28,7 @@ namespace RapidApiCurrency.Controllers
                 RequestUri = new Uri("https://currency-conversion-and-exchange-rates.p.rapidapi.com/convert?from=EUR&to=TRY&amount=1"),
                 Headers =
     {
-        { "X-RapidAPI-Key", "e377acc97emsh8b49d7ff2f70369p1d60f2jsn2c2b95aa1ebb" },
+        { "X-RapidAPI-Key", "a63848afabmsh17767ddb31368ccp17f9adjsn3197c69e37e1" },
         { "X-RapidAPI-Host", "currency-conversion-and-exchange-rates.p.rapidapi.com" },
     },
             };
@@ -39,7 +39,7 @@ namespace RapidApiCurrency.Controllers
                 RequestUri = new Uri("https://currency-conversion-and-exchange-rates.p.rapidapi.com/convert?from=GBP&to=TRY&amount=1"),
                 Headers =
     {
-        { "X-RapidAPI-Key", "e377acc97emsh8b49d7ff2f70369p1d60f2jsn2c2b95aa1ebb" },
+        { "X-RapidAPI-Key", "a63848afabmsh17767ddb31368ccp17f9adjsn3197c69e37e1" },
         { "X-RapidAPI-Host", "currency-conversion-and-exchange-rates.p.rapidapi.com" },
     },
             };
@@ -87,7 +87,7 @@ namespace RapidApiCurrency.Controllers
                 RequestUri = new Uri("https://yahoo-weather5.p.rapidapi.com/weather?location=istanbul&format=json&u=c"),
                 Headers =
     {
-        { "X-RapidAPI-Key", "e377acc97emsh8b49d7ff2f70369p1d60f2jsn2c2b95aa1ebb" },
+        { "X-RapidAPI-Key", "a63848afabmsh17767ddb31368ccp17f9adjsn3197c69e37e1" },
         { "X-RapidAPI-Host", "yahoo-weather5.p.rapidapi.com" },
     },
             };
@@ -105,7 +105,7 @@ namespace RapidApiCurrency.Controllers
                 RequestUri = new Uri("https://currency-conversion-and-exchange-rates.p.rapidapi.com/timeseries?start_date=2023-12-06&end_date=2023-12-21&from=USD&to=TRY"),
                 Headers =
     {
-        { "X-RapidAPI-Key", "e377acc97emsh8b49d7ff2f70369p1d60f2jsn2c2b95aa1ebb" },
+        { "X-RapidAPI-Key", "a63848afabmsh17767ddb31368ccp17f9adjsn3197c69e37e1" },
         { "X-RapidAPI-Host", "currency-conversion-and-exchange-rates.p.rapidapi.com" },
     },
             };
@@ -113,7 +113,7 @@ namespace RapidApiCurrency.Controllers
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<HistoricalCurrencyViewModel>>(body);
+                var values = JsonConvert.DeserializeObject<HistoricalCurrencyViewModel>(body);
 
                 return View(values);
             }

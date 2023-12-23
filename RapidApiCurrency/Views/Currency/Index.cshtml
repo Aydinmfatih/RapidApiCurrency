@@ -1,9 +1,15 @@
-﻿@model List<HistoricalCurrencyViewModel.Rates>
+﻿@model HistoricalCurrencyViewModel
 @{
     Layout = null;
     int count = 0;
 }
-<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
@@ -13,7 +19,7 @@
 
     <div class="row mt-4">
         <div class="col-6">
-            <button class="btn btn-primary">Buton 1</button>
+            <button class="btn btn-primary" onclick="downloadPDF()">Pdf olarak indir.</button>
         </div>
         <div class="col-6">
             <button class="btn btn-secondary">Buton  2</button>
@@ -23,62 +29,67 @@
 
     <div class="row mt-4">
 
-
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    Güncel Dolar : @ViewBag.usd
-                </div>
+        <div class="card text-white bg-secondary col-3 ml-4" style="max-width: 18rem;padding-right:25px">
+            <div class="card-header">Dolar</div>
+            <div class="card-body">
+                <h5 class="card-title">Güncel Dolar</h5>
+                <p class="card-text">@ViewBag.usd</p>
             </div>
         </div>
 
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    Güncel Euro : @ViewBag.eur
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    Güncel Sterlin :@ViewBag.gbp
-                </div>
+        <div class="card text-white bg-secondary col-3 ml-4 mr-4" style="max-width: 18rem;padding-right:25px">
+            <div class="card-header">Euro</div>
+            <div class="card-body">
+                <h5 class="card-title">Güncel Euro</h5>
+                <p class="card-text">@ViewBag.eur</p>
             </div>
         </div>
 
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    İstanbul için hava derecesi :@ViewBag.temperature °
-                </div>
+        <div class="card text-white bg-secondary col-3 mr-4" style="max-width: 18rem;padding-right:25px">
+            <div class="card-header">İngiliz Sterlini</div>
+            <div class="card-body">
+                <h5 class="card-title">Güncel Euro</h5>
+                <p class="card-text">@ViewBag.gbp</p>
+            </div>
+        </div>
+
+        <div class="card text-white bg-secondary col-3 mr-4" style="max-width: 18rem;padding:20px">
+            <div class="card-header">Hava durumu</div>
+            <div class="card-body">
+                <h5 class="card-title">Güncel İstanbul Hava durumu</h5>
+                <p class="card-text">@ViewBag.temperature</p>
             </div>
         </div>
     </div>
+
+
     <div class="row mt-4">
         <div class="col-12">
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Gün</th>
-                        <th scope="col">Dolar</th>
-                        <th scope="col">TRY</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <div id="pdf-content">
+                <table id="data-table" class="table table-bordered">
+                    <thead>
                         <tr>
-                           <td>@count</td>
-                           <td></td>
+                            <th scope="col">Gün</th>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">Dolar</th>
+                            <th scope="col">TRY</th>
                         </tr>
-                    }
-
-
-
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.rates.OrderByDescending(x => x.Key))
+                        {
+                            count++;
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.Key</td>
+                                <td>@item.Value.USD</td>
+                                <td>@item.Value.TRY</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -86,7 +97,29 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
-                    Chart 1
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Dolar</th>
+                                <th scope="col">TRY</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.rates.OrderByDescending(x => x.Value.USD).Take(3))
+                            {
+                                <tr>
+                                    <td>@item.Key</td>
+                                    <td>@item.Value.TRY</td>
+                                    <td>@item.Value.USD</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
@@ -100,5 +133,21 @@
     </div>
 </div>
 
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function downloadPDF() {
+        var element = document.getElementById('pdf-content');
+
+        // Ayarları belirleyerek pdf2html kullanarak PDF oluştur
+        html2pdf(element, {
+            margin: 10,
+            filename: 'tablo_verileri.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(element).save();
+    }
+</script>
